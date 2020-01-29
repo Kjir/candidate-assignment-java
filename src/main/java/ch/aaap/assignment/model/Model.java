@@ -1,5 +1,6 @@
 package ch.aaap.assignment.model;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,4 +21,6 @@ public interface Model {
   public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByDistrict();
 
   public String getDistrictsByZipCode(String zipCode);
+
+  public LocalDate getLastUpdateByPostalCommunityName(String postalCommunityName);
 }

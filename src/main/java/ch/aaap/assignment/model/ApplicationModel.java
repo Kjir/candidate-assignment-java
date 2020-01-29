@@ -2,7 +2,9 @@ package ch.aaap.assignment.model;
 
 import ch.aaap.assignment.raw.CSVPoliticalCommunity;
 import ch.aaap.assignment.raw.CSVPostalCommunity;
+import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -90,5 +92,18 @@ public class ApplicationModel implements Model {
                 this.politicalCommunities.get(pc.getPoliticalCommunityNumber()).getDistrictName())
         .findFirst()
         .orElseThrow();
+  }
+
+  @Override
+  public LocalDate getLastUpdateByPostalCommunityName(String postalCommunityName) {
+    CSVPostalCommunity postalCommunity =
+        postalCommunities.values().stream()
+            .flatMap(pc -> pc.stream())
+            .filter(pc -> pc.getName().equals(postalCommunityName))
+            .findFirst()
+            .orElseThrow();
+    return Optional.of(politicalCommunities.get(postalCommunity.getPoliticalCommunityNumber()))
+        .orElseThrow()
+        .getLastUpdate();
   }
 }

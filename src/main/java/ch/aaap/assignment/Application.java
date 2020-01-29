@@ -78,8 +78,7 @@ public class Application {
    */
   public LocalDate getLastUpdateOfPoliticalCommunityByPostalCommunityName(
       String postalCommunityName) {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+        return this.model.getLastUpdateByPostalCommunityName(postalCommunityName);
   }
 
   /**
