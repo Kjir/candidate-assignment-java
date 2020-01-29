@@ -7,9 +7,10 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
 import java.util.Set;
-
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+import lombok.Cleanup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -26,61 +27,58 @@ public class CSVUtil {
 
   private CSVUtil() {}
 
+  private interface RowParser<T> {
+    T parser(CSVRecord record);
+  }
+
   public static Set<CSVPoliticalCommunity> getPoliticalCommunities() {
     try {
-      InputStream is = CSVUtil.class.getResourceAsStream(POLITICAL_COMMUNITY_FILE);
-      Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
-      CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader());
-      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-      Set<CSVPoliticalCommunity> models = new HashSet<>();
-
-      for (final CSVRecord record : parser) {
-        CSVPoliticalCommunity row =
-            CSVPoliticalCommunity.builder()
-                .number(record.get("GDENR"))
-                .name(record.get("GDENAME"))
-                .shortName(record.get("GDENAMK"))
-                .cantonCode(record.get("GDEKT"))
-                .cantonName(record.get("GDEKTNA"))
-                .districtNumber(record.get("GDEBZNR"))
-                .districtName(record.get("GDEBZNA"))
-                .lastUpdate(LocalDate.parse(record.get("GDEMUTDAT"), formatter))
-                .build();
-        models.add(row);
-      }
-      parser.close();
-      return models;
-
+      return parseCSV(POLITICAL_COMMUNITY_FILE, CSVUtil::rowToPoliticalCommunity);
     } catch (IOException e) {
-      throw new RuntimeException("Could not parse political communities csv", e);
+      throw new RuntimeException("Could not parse political community csv", e);
     }
   }
 
   public static Set<CSVPostalCommunity> getPostalCommunities() {
 
     try {
-      InputStream is = CSVUtil.class.getResourceAsStream(POSTAL_COMMUNITY_FILE);
-      Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
-      CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader());
-      Set<CSVPostalCommunity> models = new HashSet<>();
-      for (final CSVRecord record : parser) {
-        CSVPostalCommunity row =
-            CSVPostalCommunity.builder()
-                .zipCode(record.get("PLZ4"))
-                .zipCodeAddition(record.get("PLZZ"))
-                .name(record.get("PLZNAMK"))
-                .cantonCode(record.get("KTKZ"))
-                .politicalCommunityShortName(record.get("GDENAMK"))
-                .politicalCommunityNumber(record.get("GDENR"))
-                .build();
-
-        models.add(row);
-      }
-      parser.close();
-      return models;
+      return parseCSV(POSTAL_COMMUNITY_FILE, CSVUtil::rowToPostalCommunity);
     } catch (IOException e) {
       throw new RuntimeException("could not parse postal community csv", e);
     }
+  }
+
+  private static <T> Set<T> parseCSV(String csvFile, RowParser<T> rp) throws IOException {
+    InputStream is = CSVUtil.class.getResourceAsStream(csvFile);
+    Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
+    @Cleanup CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader());
+    return StreamSupport.stream(parser.spliterator(), false)
+        .map(rp::parser)
+        .collect(Collectors.toSet());
+  }
+
+  private static CSVPoliticalCommunity rowToPoliticalCommunity(CSVRecord record) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    return CSVPoliticalCommunity.builder()
+        .number(record.get("GDENR"))
+        .name(record.get("GDENAME"))
+        .shortName(record.get("GDENAMK"))
+        .cantonCode(record.get("GDEKT"))
+        .cantonName(record.get("GDEKTNA"))
+        .districtNumber(record.get("GDEBZNR"))
+        .districtName(record.get("GDEBZNA"))
+        .lastUpdate(LocalDate.parse(record.get("GDEMUTDAT"), formatter))
+        .build();
+  }
+
+  private static CSVPostalCommunity rowToPostalCommunity(CSVRecord record) {
+    return CSVPostalCommunity.builder()
+        .zipCode(record.get("PLZ4"))
+        .zipCodeAddition(record.get("PLZZ"))
+        .name(record.get("PLZNAMK"))
+        .cantonCode(record.get("KTKZ"))
+        .politicalCommunityShortName(record.get("GDENAMK"))
+        .politicalCommunityNumber(record.get("GDENR"))
+        .build();
   }
 }
