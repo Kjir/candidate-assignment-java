@@ -3,6 +3,7 @@ package ch.aaap.assignment;
 import ch.aaap.assignment.model.Model;
 import ch.aaap.assignment.raw.CSVUtil;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.Set;
 import lombok.Getter;
 
@@ -28,12 +29,10 @@ public class Application {
    * @return amount of political communities in given canton
    */
   public long getAmountOfPoliticalCommunitiesInCanton(String cantonCode) {
-    Set<?> politicalCommunities = this.model.getPoliticalCommunitiesByCanton().get(cantonCode);
-    if(politicalCommunities == null) {
+    return Optional.ofNullable(this.model.getPoliticalCommunitiesByCanton().get(cantonCode))
+    .orElseThrow(() -> {
       throw new IllegalArgumentException("Invalid canton code");
-    }
-    return politicalCommunities.size();
-
+    }).size();
   }
 
   /**
@@ -41,11 +40,11 @@ public class Application {
    * @return amount of districts in given canton
    */
   public long getAmountOfDistrictsInCanton(String cantonCode) {
-    Set<?> districts = this.model.getDistrictsByCanton().get(cantonCode);
-    if(districts == null) {
-      throw new IllegalArgumentException("Invalid canton code");
-    }
-    return districts.size();
+    return Optional.ofNullable(this.model.getDistrictsByCanton().get(cantonCode))
+        .orElseThrow(() -> {
+          throw new IllegalArgumentException("Invalid canton code");
+        })
+        .size();
   }
 
   /**
@@ -53,17 +52,17 @@ public class Application {
    * @return amount of districts in given canton
    */
   public long getAmountOfPoliticalCommunitiesInDistict(String districtNumber) {
-    Set<?> politicalCommunities = this.model.getPoliticalCommunitiesByDistrict().get(districtNumber);
-    if (politicalCommunities == null) {
-      throw new IllegalArgumentException("Invalid district number");
-    }
-    return politicalCommunities.size();
+    return Optional.ofNullable(this.model.getPoliticalCommunitiesByDistrict().get(districtNumber))
+        .orElseThrow(() -> {
+          throw new IllegalArgumentException("Invalid district number");
+        })
+        .size();
   }
 
   /**
-   * FIXME: This function does not work for all ZIP codes. A zip code can belong to more than one district,
-   *  making it thus impossible to provide a correct implementation with these return types.
-   *  Example zip code: 8866
+   * FIXME: This function does not work for all ZIP codes. A zip code can belong to more than one
+   * district, making it thus impossible to provide a correct implementation with these return
+   * types. Example zip code: 8866
    * 
    * @param zip code 4 digit zip code
    * @return district that belongs to specified zip code
@@ -78,7 +77,7 @@ public class Application {
    */
   public LocalDate getLastUpdateOfPoliticalCommunityByPostalCommunityName(
       String postalCommunityName) {
-        return this.model.getLastUpdateByPostalCommunityName(postalCommunityName);
+    return this.model.getLastUpdateByPostalCommunityName(postalCommunityName);
   }
 
   /**
