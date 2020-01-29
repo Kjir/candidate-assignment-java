@@ -2,8 +2,8 @@ package ch.aaap.assignment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.junit.jupiter.api.Test;
-import ch.aaap.assignment.Application;
 
 public class ApplicationTest {
 
@@ -80,9 +80,9 @@ public class ApplicationTest {
 
     assertEquals(
         "Wahlkreis See-Gaster",
-         sut.getDistrictForZipCode("8866"),
-          "Correct district name for zip code '8866'");
-    
+        sut.getDistrictForZipCode("8866"),
+        "Correct district name for zip code '8866'");
+
     // FIXME: The following test will fail because it is not possible
     // to convert a zip code to a district name. There are zip codes that
     // belong to multiple districts.

@@ -4,7 +4,6 @@ import ch.aaap.assignment.model.Model;
 import ch.aaap.assignment.raw.CSVUtil;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Set;
 import lombok.Getter;
 
 public class Application {
@@ -30,9 +29,11 @@ public class Application {
    */
   public long getAmountOfPoliticalCommunitiesInCanton(String cantonCode) {
     return Optional.ofNullable(this.model.getPoliticalCommunitiesByCanton().get(cantonCode))
-    .orElseThrow(() -> {
-      throw new IllegalArgumentException("Invalid canton code");
-    }).size();
+        .orElseThrow(
+            () -> {
+              throw new IllegalArgumentException("Invalid canton code");
+            })
+        .size();
   }
 
   /**
@@ -41,9 +42,10 @@ public class Application {
    */
   public long getAmountOfDistrictsInCanton(String cantonCode) {
     return Optional.ofNullable(this.model.getDistrictsByCanton().get(cantonCode))
-        .orElseThrow(() -> {
-          throw new IllegalArgumentException("Invalid canton code");
-        })
+        .orElseThrow(
+            () -> {
+              throw new IllegalArgumentException("Invalid canton code");
+            })
         .size();
   }
 
@@ -53,9 +55,10 @@ public class Application {
    */
   public long getAmountOfPoliticalCommunitiesInDistict(String districtNumber) {
     return Optional.ofNullable(this.model.getPoliticalCommunitiesByDistrict().get(districtNumber))
-        .orElseThrow(() -> {
-          throw new IllegalArgumentException("Invalid district number");
-        })
+        .orElseThrow(
+            () -> {
+              throw new IllegalArgumentException("Invalid district number");
+            })
         .size();
   }
 
@@ -63,7 +66,7 @@ public class Application {
    * FIXME: This function does not work for all ZIP codes. A zip code can belong to more than one
    * district, making it thus impossible to provide a correct implementation with these return
    * types. Example zip code: 8866
-   * 
+   *
    * @param zip code 4 digit zip code
    * @return district that belongs to specified zip code
    */
