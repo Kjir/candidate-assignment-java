@@ -49,6 +49,7 @@ public class ApplicationModel implements Model {
         .collect(Collectors.toSet());
   }
 
+  @Override
   public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByCanton() {
     return this.politicalCommunities.values().stream()
         .collect(
@@ -58,6 +59,7 @@ public class ApplicationModel implements Model {
                     CSVPoliticalCommunity::getPoliticalCommunity, Collectors.toSet())));
   }
 
+  @Override
   public Map<String, Set<District>> getDistrictsByCanton() {
     return this.politicalCommunities.values().stream()
         .collect(
@@ -66,6 +68,7 @@ public class ApplicationModel implements Model {
                 Collectors.mapping(CSVPoliticalCommunity::getDistrict, Collectors.toSet())));
   }
 
+  @Override
   public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByDistrict() {
     return this.politicalCommunities.values().stream()
         .collect(
@@ -73,5 +76,19 @@ public class ApplicationModel implements Model {
                 CSVPoliticalCommunity::getDistrictNumber,
                 Collectors.mapping(
                     CSVPoliticalCommunity::getPoliticalCommunity, Collectors.toSet())));
+  }
+
+  @Override
+  public String getDistrictsByZipCode(String zipCode) {
+    Set<CSVPostalCommunity> postalCommunities = this.postalCommunities.get(zipCode);
+    if (postalCommunities == null) {
+      throw new IllegalArgumentException("Invalid zip code");
+    }
+    return postalCommunities.stream()
+        .map(
+            (CSVPostalCommunity pc) ->
+                this.politicalCommunities.get(pc.getPoliticalCommunityNumber()).getDistrictName())
+        .findFirst()
+        .orElseThrow();
   }
 }

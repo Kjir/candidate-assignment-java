@@ -61,12 +61,15 @@ public class Application {
   }
 
   /**
+   * FIXME: This function does not work for all ZIP codes. A zip code can belong to more than one district,
+   *  making it thus impossible to provide a correct implementation with these return types.
+   *  Example zip code: 8866
+   * 
    * @param zip code 4 digit zip code
    * @return district that belongs to specified zip code
    */
   public String getDistrictForZipCode(String zipCode) {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    return this.model.getDistrictsByZipCode(zipCode);
   }
 
   /**

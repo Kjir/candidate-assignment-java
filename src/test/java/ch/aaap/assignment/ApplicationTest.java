@@ -80,6 +80,20 @@ public class ApplicationTest {
         sut.getDistrictForZipCode("7457"),
         "Correct district name for zip code '7457'");
 
+    assertEquals(
+        "Wahlkreis See-Gaster",
+         sut.getDistrictForZipCode("8866"),
+          "Correct district name for zip code '8866'");
+    
+    // FIXME: The following test will fail because it is not possible
+    // to convert a zip code to a district name. There are zip codes that
+    // belong to multiple districts.
+    //
+    // assertEquals(
+    //     "Kanton Glarus",
+    //      sut.getDistrictForZipCode("8866"),
+    //       "Correct district name for zip code '8866'");
+
     assertThrows(
         IllegalArgumentException.class,
         () -> sut.getDistrictForZipCode("9999"),

@@ -18,4 +18,6 @@ public interface Model {
   public Map<String, Set<District>> getDistrictsByCanton();
 
   public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByDistrict();
+
+  public String getDistrictsByZipCode(String zipCode);
 }
