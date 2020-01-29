@@ -41,8 +41,11 @@ public class Application {
    * @return amount of districts in given canton
    */
   public long getAmountOfDistrictsInCanton(String cantonCode) {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    Set<?> districts = this.model.getDistrictsByCanton().get(cantonCode);
+    if(districts == null) {
+      throw new IllegalArgumentException("Invalid canton code");
+    }
+    return districts.size();
   }
 
   /**
