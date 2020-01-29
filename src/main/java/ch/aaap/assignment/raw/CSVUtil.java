@@ -1,5 +1,6 @@
 package ch.aaap.assignment.raw;
 
+import ch.aaap.assignment.model.ApplicationModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,6 +47,10 @@ public class CSVUtil {
     } catch (IOException e) {
       throw new RuntimeException("could not parse postal community csv", e);
     }
+  }
+
+  public static ApplicationModel getApplicationModel() {
+    return new ApplicationModel(getPoliticalCommunities(), getPostalCommunities());
   }
 
   private static <T> Set<T> parseCSV(String csvFile, RowParser<T> rp) throws IOException {

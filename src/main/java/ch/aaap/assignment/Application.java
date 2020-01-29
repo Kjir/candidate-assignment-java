@@ -1,11 +1,8 @@
 package ch.aaap.assignment;
 
 import ch.aaap.assignment.model.Model;
-import ch.aaap.assignment.raw.CSVPoliticalCommunity;
-import ch.aaap.assignment.raw.CSVPostalCommunity;
 import ch.aaap.assignment.raw.CSVUtil;
 import java.time.LocalDate;
-import java.util.Set;
 import lombok.Getter;
 
 public class Application {
@@ -22,15 +19,7 @@ public class Application {
 
   /** Reads the CSVs and initializes a in memory model */
   private void initModel() {
-    Set<CSVPoliticalCommunity> politicalCommunities = CSVUtil.getPoliticalCommunities();
-    Set<CSVPostalCommunity> postalCommunities = CSVUtil.getPostalCommunities();
-
-    politicalCommunities.stream()
-        .forEach((CSVPoliticalCommunity c) -> System.out.println(c.getName()));
-    postalCommunities.stream()
-        .forEach((CSVPostalCommunity c) -> System.out.println(c.getZipCode()));
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    this.model = CSVUtil.getApplicationModel();
   }
 
   /**

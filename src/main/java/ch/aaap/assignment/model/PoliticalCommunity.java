@@ -1,16 +1,15 @@
 package ch.aaap.assignment.model;
 
 import java.time.LocalDate;
+import lombok.Value;
 
-public interface PoliticalCommunity {
+@Value
+public class PoliticalCommunity {
 
-  public String getNumber();
-
-  public String getName();
-
-  public String getShortName();
-
-  public LocalDate getLastUpdate();
+  private String number;
+  private String name;
+  private String shortName;
+  private LocalDate lastUpdate;
 
   // TODO add more features here representing the relations
 }

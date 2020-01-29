@@ -1,5 +1,6 @@
 package ch.aaap.assignment.raw;
 
+import ch.aaap.assignment.model.PostalCommunity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -24,4 +25,9 @@ public class CSVPostalCommunity {
 
   // GDENAMK
   private String politicalCommunityShortName;
+
+  public PostalCommunity getPostalCommunity() {
+    return new PostalCommunity(
+        getZipCode(), getZipCodeAddition(), getName(), getPoliticalCommunityNumber());
+  }
 }

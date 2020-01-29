@@ -1,12 +1,13 @@
 package ch.aaap.assignment.model;
 
-public interface PostalCommunity {
+import lombok.Value;
 
-  public String getZipCode();
-
-  public String getZipCodeAddition();
-
-  public String getName();
+@Value
+public class PostalCommunity {
+  private final String zipCode;
+  private final String zipCodeAddition;
+  private final String name;
+  private final String politicalCommunityNumber;
 
   // TODO add more features here representing the relations
 }
