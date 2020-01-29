@@ -3,6 +3,7 @@ package ch.aaap.assignment;
 import ch.aaap.assignment.model.Model;
 import ch.aaap.assignment.raw.CSVUtil;
 import java.time.LocalDate;
+import java.util.Set;
 import lombok.Getter;
 
 public class Application {
@@ -27,8 +28,12 @@ public class Application {
    * @return amount of political communities in given canton
    */
   public long getAmountOfPoliticalCommunitiesInCanton(String cantonCode) {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    Set<?> politicalCommunities = this.model.getPoliticalCommunitiesByCanton().get(cantonCode);
+    if(politicalCommunities == null) {
+      throw new IllegalArgumentException("Invalid canton code");
+    }
+    return politicalCommunities.size();
+
   }
 
   /**
@@ -74,7 +79,6 @@ public class Application {
    * @return amount of canton
    */
   public long getAmountOfCantons() {
-    // TODO implementation
     return model.getCantons().size();
   }
 

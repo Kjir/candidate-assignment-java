@@ -2,6 +2,7 @@ package ch.aaap.assignment.model;
 
 import ch.aaap.assignment.raw.CSVPoliticalCommunity;
 import ch.aaap.assignment.raw.CSVPostalCommunity;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,5 +38,14 @@ public class ApplicationModel implements Model {
   @Override
   public Set<District> getDistricts() {
     return politicalCommunities.stream().map(pc -> pc.getDistrict()).collect(Collectors.toSet());
+  }
+
+  public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByCanton() {
+    return this.politicalCommunities.stream()
+        .collect(
+            Collectors.groupingBy(
+                CSVPoliticalCommunity::getCantonCode,
+                Collectors.mapping(
+                    CSVPoliticalCommunity::getPoliticalCommunity, Collectors.toSet())));
   }
 }
