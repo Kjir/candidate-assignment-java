@@ -56,4 +56,13 @@ public class ApplicationModel implements Model {
                 CSVPoliticalCommunity::getCantonCode,
                 Collectors.mapping(CSVPoliticalCommunity::getDistrict, Collectors.toSet())));
   }
+
+  public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByDistrict() {
+    return this.politicalCommunities.stream()
+        .collect(
+            Collectors.groupingBy(
+                CSVPoliticalCommunity::getDistrictNumber,
+                Collectors.mapping(
+                    CSVPoliticalCommunity::getPoliticalCommunity, Collectors.toSet())));
+  }
 }

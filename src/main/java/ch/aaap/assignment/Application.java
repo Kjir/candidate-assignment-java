@@ -53,8 +53,11 @@ public class Application {
    * @return amount of districts in given canton
    */
   public long getAmountOfPoliticalCommunitiesInDistict(String districtNumber) {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    Set<?> politicalCommunities = this.model.getPoliticalCommunitiesByDistrict().get(districtNumber);
+    if (politicalCommunities == null) {
+      throw new IllegalArgumentException("Invalid district number");
+    }
+    return politicalCommunities.size();
   }
 
   /**

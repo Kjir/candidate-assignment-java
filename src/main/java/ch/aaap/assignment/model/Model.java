@@ -16,4 +16,6 @@ public interface Model {
   public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByCanton();
 
   public Map<String, Set<District>> getDistrictsByCanton();
+
+  public Map<String, Set<PoliticalCommunity>> getPoliticalCommunitiesByDistrict();
 }
