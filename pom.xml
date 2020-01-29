@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.aaap.assignments</groupId>
 	<artifactId>candidate-assignment-java</artifactId>
@@ -27,6 +25,36 @@
 				<version>3.8.1</version>
 				<configuration>
 					<release>${java.version}</release>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.cosium.code</groupId>
+				<artifactId>maven-git-code-format</artifactId>
+				<version>1.25</version>
+				<executions>
+					<!-- On commit, format the modified java files -->
+					<execution>
+						<id>install-formatter-hook</id>
+						<goals>
+							<goal>install-hooks</goal>
+						</goals>
+					</execution>
+					<!-- On Maven verify phase, fail if any file 
+        (including unmodified) is badly formatted -->
+					<execution>
+						<id>validate-code-format</id>
+						<goals>
+							<goal>validate-code-format</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<googleJavaFormatOptions>
+						<aosp>false</aosp>
+						<fixImportsOnly>false</fixImportsOnly>
+						<skipSortingImports>false</skipSortingImports>
+						<skipRemovingUnusedImports>false</skipRemovingUnusedImports>
+					</googleJavaFormatOptions>
 				</configuration>
 			</plugin>
 		</plugins>
