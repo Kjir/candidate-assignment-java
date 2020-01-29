@@ -82,9 +82,12 @@ public class ApplicationModel implements Model {
 
   @Override
   public String getDistrictsByZipCode(String zipCode) {
-    Set<CSVPostalCommunity> postalCommunities = Optional.ofNullable(
-        this.postalCommunities.get(zipCode))
-      .orElseThrow(() -> { throw new IllegalArgumentException("Invalid zip code"); });
+    Set<CSVPostalCommunity> postalCommunities =
+        Optional.ofNullable(this.postalCommunities.get(zipCode))
+            .orElseThrow(
+                () -> {
+                  throw new IllegalArgumentException("Invalid zip code");
+                });
 
     return postalCommunities.stream()
         .map(
@@ -106,5 +109,19 @@ public class ApplicationModel implements Model {
             politicalCommunities.get(postalCommunity.getPoliticalCommunityNumber()))
         .orElseThrow()
         .getLastUpdate();
+  }
+
+  @Override
+  public Set<PoliticalCommunity> getPoliticalCommunitiesWithoutPostalCommunity() {
+    Set<String> politicalCommunityNumbers =
+        this.postalCommunities.values().stream()
+            .flatMap(pc -> pc.stream())
+            .map(CSVPostalCommunity::getPoliticalCommunityNumber)
+            .collect(Collectors.toSet());
+
+    return this.politicalCommunities.values().stream()
+        .filter(pc -> !politicalCommunityNumbers.contains(pc.getNumber()))
+        .map(CSVPoliticalCommunity::getPoliticalCommunity)
+        .collect(Collectors.toSet());
   }
 }

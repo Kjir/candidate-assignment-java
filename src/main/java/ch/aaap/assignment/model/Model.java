@@ -23,4 +23,6 @@ public interface Model {
   public String getDistrictsByZipCode(String zipCode);
 
   public LocalDate getLastUpdateByPostalCommunityName(String postalCommunityName);
+
+  public Set<PoliticalCommunity> getPoliticalCommunitiesWithoutPostalCommunity();
 }

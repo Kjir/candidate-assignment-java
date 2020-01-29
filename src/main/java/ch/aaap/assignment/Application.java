@@ -95,7 +95,6 @@ public class Application {
    * @return amount of political communities without postal communities
    */
   public long getAmountOfPoliticalCommunityWithoutPostalCommunities() {
-    // TODO implementation
-    throw new RuntimeException("Not yet implemented");
+    return model.getPoliticalCommunitiesWithoutPostalCommunity().size();
   }
 }
